@@ -1,0 +1,28 @@
+const webSocket = new WebSocket('Your IP:Port');
+
+webSocket.addEventListener('open', function(event)
+{
+    webSocket.send("HelloFromClient");
+});
+
+webSocket.addEventListener('message', function(event)
+{
+    json = JSON.parse(event.data);
+
+    switch (json.type)
+{
+    case "data":
+        UpdateAndDisplaySensorData(json.data[0], json.data[1], json.data[2], json.data[3]);
+        break;
+            
+    default:
+        console.log(json);
+        console.log("Got somthing which i cannot handle. Try to se what to do");
+        break;     
+}
+})
+
+function UpdateAndDisplaySensorData(humidity, humidityDecimal, temperature, temperatureDecimal)
+{
+    document.getElementById("HumidityDisplay").innerText = humidity + '.' + humidityDecimal;
+    document.getElementById("TemperatureDisplay").innerText = temperature + '.' + temperatureDecimal;
